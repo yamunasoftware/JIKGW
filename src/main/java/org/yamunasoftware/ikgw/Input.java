@@ -11,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.FileWriter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +22,7 @@ import one.microproject.rpi.hardware.gpio.sensors.BME280Builder;
 import one.microproject.rpi.hardware.gpio.sensors.impl.BME280Impl;
 
 public class Input {
-  private static final String systemInfoPath = "/.sysinfo";
+  private static final String systemInfoFile = ".sysinfo";
   private static final Logger logger = LoggerFactory.getLogger(Input.class);
 
   private static final int address = 0x70;
@@ -67,7 +66,7 @@ public class Input {
   public static HashMap<String, String> getSystemInfo() {
     HashMap<String, String> systemInfo = new HashMap<>();
     try {
-      InputStream stream = Input.class.getClassLoader().getResourceAsStream(systemInfoPath);
+      InputStream stream = Input.class.getClassLoader().getResourceAsStream(systemInfoFile);
 
       if (stream == null) {
         throw new FileNotFoundException("Unable to Open System File");
@@ -84,6 +83,11 @@ public class Input {
         if (line.contains("KAFKA_URL")) {
           String url = line.replace("KAFKA_URL=", "");
           systemInfo.put("KAFKA_URL", url);
+        }
+
+        if (line.contains("KAFKA_TOPIC")) {
+          String topic = line.replace("KAFKA_TOPIC=", "");
+          systemInfo.put("KAFKA_TOPIC", topic);
         }
       }
     }
