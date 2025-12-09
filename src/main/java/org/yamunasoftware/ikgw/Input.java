@@ -85,11 +85,6 @@ public class Input {
           String url = line.replace("KAFKA_URL=", "");
           systemInfo.put("KAFKA_URL", url);
         }
-
-        if (line.contains("KAFKA_TOPIC")) {
-          String topic = line.replace("KAFKA_TOPIC=", "");
-          systemInfo.put("KAFKA_TOPIC", topic);
-        }
       }
     }
 
@@ -105,20 +100,5 @@ public class Input {
       logger.error("Error: Error While Reading System Info\n{}\n", e.getMessage());
     }
     return systemInfo;
-  }
-
-  public static void resetSystemInfo() {
-    try (FileWriter writer = new FileWriter(systemInfoPath)) {
-      String content = "SYSTEM_ID=\nKAFKA_URL\nKAFKA_TOPIC=\n";
-      writer.write(content);
-    }
-
-    catch (IOException e) {
-      logger.error("Error: Unable to Write System Info\n{}\n", e.getMessage());
-    }
-
-    catch (Exception e) {
-      logger.error("Error: Error While Writing System Info\n{}\n", e.getMessage());
-    }
   }
 }
