@@ -1,3 +1,3 @@
-# IKGW
+# JIKGW
 
-IoT Kafka Gateway
+Java IoT Kafka Gateway
