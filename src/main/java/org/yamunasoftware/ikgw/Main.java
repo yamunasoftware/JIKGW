@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
-public class Gateway {
+public class Main {
   private static final String topic = "IMADDS";
   private static final int pollingPeriod = 10000;
-  private static final Logger logger = LoggerFactory.getLogger(Gateway.class);
+  private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
   public static void main(String[] args) {
     HashMap<String, String> systemInfo = Input.getSystemInfo();
