@@ -80,6 +80,11 @@ public class Input {
           systemInfo.put("SYSTEM_ID", id);
         }
 
+        if (line.contains("SYSTEM_TYPE")) {
+          String id = line.replace("SYSTEM_TYPE=", "");
+          systemInfo.put("SYSTEM_TYPE", id);
+        }
+
         if (line.contains("KAFKA_URL")) {
           String url = line.replace("KAFKA_URL=", "");
           systemInfo.put("KAFKA_URL", url);

@@ -20,12 +20,13 @@ public class Main {
   public static void main(String[] args) {
     HashMap<String, String> systemInfo = Input.getSystemInfo();
     String deviceID = systemInfo.get("SYSTEM_ID");
+    String deviceType = systemInfo.get("SYSTEM_TYPE");
     String kafkaURL = systemInfo.get("KAFKA_URL");
     KafkaProducer<String, String> producer = setupProducer(deviceID, kafkaURL);
 
     while (true) {
       try {
-        sendMessage(producer, deviceID);
+        sendMessage(producer, deviceID, deviceType);
         Thread.sleep(pollingPeriod);
       }
 
@@ -42,8 +43,8 @@ public class Main {
     }
   }
 
-  private static void sendMessage(KafkaProducer<String, String> producer, String id) throws Exception {
-    String message = buildMessage(id);
+  private static void sendMessage(KafkaProducer<String, String> producer, String id, String type) throws Exception {
+    String message = buildMessage(id, type);
     ProducerRecord<String, String> record = new ProducerRecord<>(topic, id, message);
     RecordMetadata metadata = producer.send(record).get();
     logger.info("Sent message from device {}\nPartition: {}\nOffset: {}\nTimestamp: {}\n",
@@ -67,8 +68,9 @@ public class Main {
     return new KafkaProducer<>(properties);
   }
 
-  private static String buildMessage(String id) {
-    StringBuilder message = new StringBuilder("{\"deviceID\":\"").append(id).append("\",");
+  private static String buildMessage(String id, String type) {
+    StringBuilder message = new StringBuilder("{\"deviceID\":\"").append(id).append("\",")
+        .append("\"deviceType\":\"").append(type).append("\",");
     ArrayList<HashMap<Integer, HashMap<String, Float>>> data = Input.dataReadout();
     message.append("\"deviceData\":[");
     int count = 0;
